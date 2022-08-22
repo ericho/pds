@@ -39,22 +39,74 @@ El presente trabajo resume el contenido de tres artículos sobre el Procesamient
 \end{abstract}
 
 \section{Introducción}
-La evolución del PDS ha estado ligada diréctamente al desarrollo tecnológico de los dispositivos que la hacen posible. En los años previos a la década de 1950, el PDS se realizaba únicamente con circuitos analógicos. Posteriormente, la inclusión de circuitos digitales benefició el modelado del PDS, sin embargo el desempeño de estos circuitos limitó durante un tiempo la implementación de aplicaciones de PDS. Es en la últimas dos décadas donde se ha presentado el mayor incremento en la investigación y desarrollo de PDS. Cada vez se tiene acceso a nuevos dispositivos con mejoras en prestaciones de procesamiento y consumo de energía, microcontroladores optimizados para realizar operaciones de multiplicación y suma de una forma eficiente. Así mismo, es posible diseñar circuitos a la medida mediante FPGAs y ASICs. Incluso se puede considerar el uso de unidades de procesamiento de gráficos para alguna aplicación de PDS.\\
+La evolución del PDS ha estado ligada diréctamente al desarrollo tecnológico de los dispositivos que la hacen posible. En los años previos a la década de 1950, el PDS se realizaba únicamente con circuitos analógicos. Posteriormente, la inclusión de circuitos digitales benefició el modelado del PDS, sin embargo, el desempeño de estos circuitos limitó durante un tiempo la implementación de aplicaciones de PDS. Es en las últimas dos décadas donde se ha presentado el mayor incremento en la investigación y desarrollo de PDS. Cada vez se tiene acceso a nuevos dispositivos con mejoras en prestaciones de procesamiento y consumo de energía, microcontroladores optimizados para realizar operaciones de multiplicación y suma de una forma eficiente. Así mismo, es posible diseñar circuitos a la medida mediante FPGAs y ASICs. Incluso se puede considerar el uso de unidades de procesamiento de gráficos para alguna aplicación de PDS.
 
-Es de espera que, durante estos últimos años de un incremento considerable en el desarrollo de PDS, nuevas problemáticas estén surgiendo demandando técnicas y soluciones innovadoras. Haykin \cite{haykin}, presentó en 2001 un artículo describiendo el estado y retos futuros en el PDS. En particular, Haykin destacó como problema principal la separación entre las matemáticas y física en el diseño de soluciones de PDS. Años más tarde, Deng \cite{golden_age}, visita las aplicaciones principales de PDS en 2009, mencionando la necesidad de crear grupos interdisciplinarios que ayuden a comprender mejor las señales que se están interpretando. Finalmente en 2020, Brower \cite{dps_dead} hace la pregunta si los procesadores digitales de señales han muerto, respondiendo a detalle con las aplicaciones actuales y la tendencia marcada a incorporar técnicas de inteligencia artificial.\\
+Es de espera que, durante estos últimos años de un incremento considerable en el desarrollo de PDS, nuevas problemáticas estén surgiendo demandando técnicas y soluciones innovadoras. Haykin \cite{haykin}, presentó en 2001 un artículo describiendo el estado y retos futuros en el PDS. En particular, Haykin destacó como problema principal la separación entre las matemáticas y física en el diseño de soluciones de PDS. Años más tarde, Deng \cite{golden_age}, visita las aplicaciones principales de PDS en 2009, mencionando la necesidad de crear grupos interdisciplinarios que ayuden a comprender mejor las señales que se están interpretando. Finalmente en 2020, Brower \cite{dps_dead} visita el caso de Texas Instruments e intenta explicar cómo una empresa líder en PDS no supo aprovechar las nuevas tendencias en Inteligencia Artificial y 5G.
 
 Las siguientes secciones resumen cada uno de estos tres artículos.
 
 \section{Procesamiento de señales: cuando las matemáticas y la física se encuentran}
-Descripción del primer artíclo
+Haykin \cite{haykin} hace un resumen de lo que ha sido el PDS durante el siglo 20. Menciona que la mayor parte del trabajo  y fenómenos analizados están basados en dos suposiciones estocásticas: 1) que los modelos estadísticos son estacionarios, es decir, que sus propiedades estadísticas no cambian durante el tiempo y 2) que son modelos Gaussianos, donde su distribución de probabilidad no cambia sin importar el rango observado. Aunque estas suposiciones puede favorecer el desarrollo de marcos de referencia matemáticos, en realidad se alejan del comportamiento de fenónemos físicos reales.
+
+La naturaleza raramente ofrece fenómenos Gaussianos. En cambio, es común observar comportamientos que demandan el uso de estadística de mayor orden para realizar una caracterización adecuada. De lo contrario, aceptar estas suposiciones solo provocan que la estádistica subyacente sea desconocida.
+
+Haykin también revisa la literatura disponible al momento de escribir el artículo, haciendo una observación de los puntos relevantes y destacando los siguientes:
+
+\begin{itemize}
+    \item El uso abundante de matemáticas abstractas.
+    \item Dependencia en simulaciones por computadora.
+    \item Casi una completa falta de experimentación con datos reales.
+\end{itemize}
+
+Se recalca que, de acuerdo a Haykin, si bien las simulaciones por computadora agilizan la caracterización de un problema, estas no pueden sustituir a las pruebas con datos reales. Siendo esta la principal razón de que los algoritmos de PDS no puedan sobrevivir la \textit{prueba del tiempo}. La falla de estos algoritmos se atribuye a alguna de las siguientes causas:
+
+\begin{itemize}
+    \item Suposiciones irreales al formular los modelos matemáticos. Esto implica una discordancia entre la base matemáticas de los algoritmos y la física subyacente en el problema a resolver, causando así una inevitable pérdida de información valiosa.
+    \item No adquirir información previa del fenómeno físico y considerarla en el diseño del algoritmo, lo cual puede provocar un desempeño errático.
+    \item Sensibilidad de los algoritmos a desviaciones del modelo matemático asumido. Los algoritmos pueden ser inestables.
+\end{itemize}
+
+Finalmente en este artículo se listan cinco ingredientes esenciales para asegurar un buen desempeño de los algoritmos del PDS.
+
+\begin{itemize}
+    \item Información previa: La comprensión de las leyes físicas que gobiernan el fenómeno generador de las señales de interés.
+    \item Regularización: Se logra incorporando la información previa en el diseño del algoritmo, haciéndolo de una forma eficiente con el fin de estabilizar la solución.
+    \item Adaptabilidad: Se hace posible entendiendo el ambiente operativo, considerando su estructura estadística desconocida y con el seguimiento de su comportamiento no estacionario.
+    \item Robustez: Que los algoritmos no amplifiquen perturbaciones inesperadas. En una perspectiva estadística, esto es que los algoritmos sean insensibles a desviaciones de la distribución de probabilidad del modelo en cuestión.
+    \item Retroalimentación: Un poderoso principio en ingeniería que permite reducir la sensibilidad a perturbaciones inesperadas y mejorar la convergencia.
+\end{itemize}
+
+De igual forma que la física Newtoniana es la base para física actual, los fundamentos del PDS desarrollados durante el siglo 20 serán una parte integral de nuevas técnicas y procesos futuros. Las matemáticas y física no pueden estar desconectados, se deben probar los algoritmos con información real y se debe aprender de esta información.
 
 \section{Abrazando una nueva era dorada en el procesamiento de señales}
-Hablar sobre el segundo artículo
+Li Deng \cite{golden_age}, editor en jefe de la revista de Procesamiento de Señales de IEEE, publicó en 2009 una editorial hablando sobre la nueva \textit{era dorada} en el PDS. Lista cómo el procesamiento de señales se puede encontrar ya en todos los aspectos de nuestras vidas, es presente en teléfonos celulares, automóviles, cámaras, escáneres, etc. Un teléfono celular es el ejemplo más típico de un sistema integral que procesa voz, audio, imágenes, video y todos los aspectos de la comunicación inalámbrica.
+
+Al momento de este artículo, el avance tecnológico ha direccionado el PDS hacia un nuevo rumbo como la bioinformática, el lenguaje natural, redes y seguridad. Resalta que el reto principal para el PDS es trascender del rol convencional del PDS, analizando a bajo nivel la naturaleza de las señales, hacia un nuevo paradigma donde la comprensión y extracción de información a alto nivel permita conocer sobre su semántica.
+
+Deng enfatiza que si bien puede haber nuevas tendencias en la codificación, análisis, síntesis y reconocimiento de señales, estas habilidades ya no son suficientes y los nuevos retos requieren de PDS no tradicional, incluyendo la comprensión, minería y extracción de información de alto nivel muchas veces inmersa en fuentes de bajo nivel. Tambien Deng recalca que para generar un mayor impacto con el PDS, se necesita de una mayor interacción interdisciplinaria entre comunidades de investigación académicas y de industria.
+
+Finalmente este editorial detalla como la revista busca fortalecer estas interacciones interdisciplinarias, proveyendo tutoriales para comprender teorias, algoritmos, herramientas y aplicaciones relacionadas con el PDS.
 
 \section{¿Están los PDSs muertos?}
-Hablar sobre el tercer artículo
+Brower \cite{dps_dead} inicia su artículo citando otro artículo sobre la \textit{muerte y renacimiento} del PDS, publicado por un par de ingenieros de Texas Instruments. Ese artículo detalla cómo a partir de ese momento, el PDS es uno de los bloques esenciales en áreas populares como la ciencia de datos y la inteligencia artificial (IA). Y señala que el PDS comenzará a ser un tema fundamental en los programas de ingeniería en las universidades. Usando este artículo como referencia, Brower explica porque Texas Instruments (TI) actualmente no es un lider en IA y 5G, aún cuando estás fueron las tendencias evidentes en los últimos años y reconocidas por sus propios líderes técnicos.
+
+Brower revisa el estado de TI en 2014, dentro de su portafolio de soluciones TI ofrecía CPUs de múltiples núcleos optimizados para cómputo intensivo. Adicionalmente contaba con soluciones PCIe de alto desempeño, contaba con un gran soporte de software, desde drivers hasta programas para procesamiento de imágenes. Todas las soluciones de TI en aquel momento podían competir fácilmente con GPUs y otros coprocesadores, ubicando a TI al mismo nivel que NVIDIA con los mismos retos por venir. Sin embargo, al llegar el momento de ofrecer soluciones para las nuevas necesidades de IA y procesamiento de alto desempeño, TI carecía de un plan que involucrara el mercado de servidores. Esto finalmente puso a TI y a sus empresas asociadas en una clara desventaja.
+
+Para explicar lo sucedido con TI, Brower menciona cómo los factores históricos y culturales de TI fueron fundamentales en estas decisiones de negocio. TI siempre tuvo un aversión al mercado de servidores, enfocándose siempre en productos embebidos e incluso siguiendo el mantra de \textit{"Somos una empresa de componentes, nosotros no hacemos sistemas"}. Alrededor de 2010 la filosofia de TI tenía que actualizarse, la tendencia hacia la era de la información estaba bien definida y el 5G parecía ser uno de sus principales promotores. Se requerian soluciones escalables que pudieran procesar grandes cantidades de información, en particular para proveedores de telefonía e Internet móvil. Sin embargo, TI no se involucró en nada de esto.
+
+Actualmente TI sigue promoviendo tarjetas de evaluación, emuladores de JTAG e interfaces de programación para Windows. Una estrategia claramente desactualizada. En 2016 comenzó una migración de grandes clientes de TI buscando soluciones alternativas, se detuvo el desarrollo y planeación de nuevos CPUs multinúcleo, acompañado de un recorte importante de personal. Brower menciona que es común encontrarse exempleados de TI trabajando ahora en empresas dedicadas a IA y 5G.
+
+TI continua ofreciendo soluciones de PDS para el mercado automotriz y otras áreas relacionadas, pero incluso ahí la IA y 5G, y la necesidad de brincar al mercado de servidores, están cada vez más presentes.
 
 
+\section{Conclusión}
+Se revisaron los tres artículos ayudando a tener una visión de la evolución del PDS así como de sus retos, de investigación y tecnológicos. 
+
+Haikyn se enfoca en la desconexión que existe entre las matemáticas y la física de los problemas a resolver. Resalta que esta es la principal razón de que los algoritmos de PDS no puedan sobrevivir el paso del tiempo enfrentando información real. Deduce que un desconocimiento de la física de los fenómenos generadores de señales son la causa principal y que el desarrollo de algoritmos asume comportamientos poco realistas. Al final Haikyn propone cinco características que debe tener el PDS futuro, siendo fundamental una colaboración interdisciplinaria entre matemáticas y física.
+
+Deng, en su editorial, reconoce que las técnicas tradicionales del PDS ya no son suficientes para los retos por venir. En 2009, la era de la información estaba comenzando y Deng resaltó que era fundamental adaptarse a ello. A partir de ahora es fundamental extraer información de alto nivel de las señales, y la investigación y desarollo de PDS se debe enfocar en esto.
+
+Brower intenta explicar porque Texas Instruments no aprovechó las tendencias en IA y 5G, y cómo no adaptó sus soluciones para estos nuevos problemas. Una combinación de historia y cultura de la empresa hicieron que estás decisiones de negocio dejaran escapar la oportunidad. Parece dificil para TI poder recomponer su camino, incluso en los nichos donde aún está presente, la necesidad de moverse hacia un mercado de servidores es cada vez mayor.
 \section{Referencias}
 
 \bibliographystyle{ieeetr}
